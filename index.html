@@ -1,113 +1,382 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Custom Sticker Shop | 50+ Stickers</title>
-<style>
-:root {
-  --primary: #FF6B6B;
-  --secondary: #4ECDC4;
-  --dark: #292f36;
-  --light: #f7fff7;
-  --accent: #FFE66D;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-body { background-color: var(--light); color: var(--dark); }
-header { background-color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
-.logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Store - Buy on Redbubble</title>
+    <style>
+        :root {
+            --primary-color: #ff3333; /* Redbubble Red */
+            --bg-color: #f4f4f9;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
 
-.filters { display: flex; justify-content: center; gap: 1rem; margin: 2rem 0; flex-wrap: wrap; padding: 0 1rem; }
-.filter-btn { padding: .5rem 1.5rem; border: 2px solid var(--secondary); background: transparent; color: var(--secondary); border-radius: 25px; cursor: pointer; font-weight: bold; transition: .3s; }
-.filter-btn.active, .filter-btn:hover { background: var(--secondary); color: #fff; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
 
-.container { max-width: 1200px; margin: 0 auto; padding: 0 1rem 4rem; }
-.sticker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 2rem; }
-.sticker-card { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: .3s; position: relative; }
-.sticker-card:hover { transform: translateY(-10px); }
-.sticker-image { height: 180px; background-color: #f0f0f0; display: flex; justify-content: center; align-items: center; border-bottom: 3px solid var(--accent); }
-.sticker-image svg { width: 100px; height: 100px; }
-.sticker-info { padding: 1rem; text-align: center; }
-.sticker-title { font-size: 1rem; margin-bottom: .5rem; font-weight: 600; }
-.sticker-price { color: var(--primary); font-weight: bold; font-size: 1.1rem; margin-bottom: 1rem; display: block; }
-.add-btn { background-color: var(--dark); color: white; border: none; padding: .8rem 1.5rem; border-radius: 8px; cursor: pointer; width: 100%; transition: .2s; }
-.add-btn:hover { background-color: var(--primary); }
+        /* Header Styles */
+        header {
+            background-color: #fff;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
 
-footer { background-color: var(--dark); color: white; text-align: center; padding: 2rem; margin-top: auto; }
-.count-display { text-align: center; margin-bottom: 1rem; font-size: 1.1rem; color: var(--dark); }
-</style>
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: #222;
+        }
+
+        p.subtitle {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* Category Filter Styles */
+        .category-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .cat-btn {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .cat-btn:hover {
+            background-color: #eee;
+        }
+
+        .cat-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Grid Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem 4rem 1rem;
+        }
+
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        .emoji-display {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+
+        .emoji-name {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 15px;
+            text-transform: capitalize;
+        }
+
+        /* Button Styles */
+        .buy-btn {
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            width: 100%;
+            box-sizing: border-box;
+            transition: background-color 0.2s;
+            display: block;
+        }
+
+        .buy-btn:hover {
+            background-color: #d62929;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: #333;
+            color: #fff;
+            margin-top: auto;
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">🎨 CustomStickers</div>
-</header>
+    <header>
+        <h1>Emoji Shop</h1>
+        <p class="subtitle">Browse 50+ Emojis and buy them on Redbubble!</p>
+    </header>
 
-<section class="filters">
-  <button class="filter-btn active" onclick="filterStickers('all')">All</button>
-  <button class="filter-btn" onclick="filterStickers('animals')">Animals</button>
-  <button class="filter-btn" onclick="filterStickers('food')">Food</button>
-  <button class="filter-btn" onclick="filterStickers('nature')">Nature</button>
-  <button class="filter-btn" onclick="filterStickers('abstract')">Abstract</button>
-</section>
+    <div class="category-nav" id="categoryNav">
+        <!-- Categories will be injected here by JS -->
+    </div>
 
-<div class="container">
-  <div class="count-display">Showing <span id="stickerCount">0</span> stickers</div>
-  <div class="sticker-grid" id="stickerGrid"></div>
-</div>
+    <div class="container">
+        <div class="emoji-grid" id="emojiGrid">
+            <!-- Emojis will be injected here by JS -->
+        </div>
+    </div>
 
-<footer>
-  <p>&copy; 2026 CustomStickers. All SVGs hand-coded! 🎨</p>
-</footer>
+    <footer>
+        <p>&copy; 2023 Emoji Store. All products link to Redbubble.</p>
+    </footer>
 
-<script>
-// Generate 50 placeholder stickers
-const categories = ['animals','food','nature','abstract'];
-const customSVGs = [];
-for(let i=1; i<=50; i++){
-  let cat = categories[i % categories.length];
-  customSVGs.push({
-    id: 'Sticker '+i,
-    category: cat,
-    url: 'https://www.redbubble.com/i/sticker/Example-Sticker-'+i, // Replace with real Redbubble link
-    svg: `<svg viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="35" fill="${['#FFD93D','#FF6B6B','#4ECDC4','#FFE66D'][i%4]}"/>
-            <text x="50%" y="55%" text-anchor="middle" font-size="20" fill="#333" dy=".3em">😊</text>
-          </svg>`
-  });
-}
+    <script>
+        // 1. Data: The 50+ Emojis and their Categories
+        const emojis = [
+            // Animals
+            { emoji: '🐶', name: 'Dog Face', category: 'Animals' },
+            { emoji: '🐱', name: 'Cat Face', category: 'Animals' },
+            { emoji: '🐭', name: 'Mouse Face', category: 'Animals' },
+            { emoji: '🐹', name: 'Hamster', category: 'Animals' },
+            { emoji: '🐰', name: 'Rabbit', category: 'Animals' },
+            { emoji: '🦊', name: 'Fox', category: 'Animals' },
+            { emoji: '🐻', name: 'Bear', category: 'Animals' },
+            { emoji: '🐼', name: 'Panda', category: 'Animals' },
+            { emoji: '🐨', name: 'Koala', category: 'Animals' },
+            { emoji: '🐯', name: 'Tiger', category: 'Animals' },
+            { emoji: '🦁', name: 'Lion', category: 'Animals' },
+            { emoji: '🐮', name: 'Cow', category: 'Animals' },
+            { emoji: '🐷', name: 'Pig', category: 'Animals' },
+            { emoji: '🐸', name: 'Frog', category: 'Animals' },
+            { emoji: '🐵', name: 'Monkey', category: 'Animals' },
+            { emoji: '🐔', name: 'Chicken', category: 'Animals' },
+            { emoji: '🐧', name: 'Penguin', category: 'Animals' },
+            { emoji: '🐦', name: 'Bird', category: 'Animals' },
+            { emoji: '🐤', name: 'Baby Chick', category: 'Animals' },
+            { emoji: '🦆', name: 'Duck', category: 'Animals' },
+            { emoji: '🦅', name: 'Eagle', category: 'Animals' },
+            { emoji: '🦉', name: 'Owl', category: 'Animals' },
+            { emoji: '🐗', name: 'Boar', category: 'Animals' },
+            { emoji: '🐴', name: 'Horse', category: 'Animals' },
+            { emoji: '🦄', name: 'Unicorn', category: 'Animals' },
+            { emoji: '🐝', name: 'Bee', category: 'Animals' },
+            { emoji: '🐛', name: 'Bug', category: 'Animals' },
+            { emoji: '🦋', name: 'Butterfly', category: 'Animals' },
+            { emoji: '🐌', name: 'Snail', category: 'Animals' },
+            { emoji: '🐞', name: 'Lady Beetle', category: 'Animals' },
+            { emoji: '🐜', name: 'Ant', category: 'Animals' },
+            { emoji: '🦟', name: 'Mosquito', category: 'Animals' },
+            { emoji: '🦗', name: 'Cricket', category: 'Animals' },
+            { emoji: '🕷', name: 'Spider', category: 'Animals' },
+            { emoji: '🦂', name: 'Scorpion', category: 'Animals' },
+            { emoji: '🐢', name: 'Turtle', category: 'Animals' },
+            { emoji: '🐍', name: 'Snake', category: 'Animals' },
+            { emoji: '🦎', name: 'Lizard', category: 'Animals' },
+            { emoji: '🦖', name: 'T-Rex', category: 'Animals' },
+            { emoji: '🦕', name: 'Sauropod', category: 'Animals' },
+            { emoji: '🐙', name: 'Octopus', category: 'Animals' },
+            { emoji: '🦑', name: 'Squid', category: 'Animals' },
+            { emoji: '🦐', name: 'Shrimp', category: 'Animals' },
+            { emoji: '🦞', name: 'Lobster', category: 'Animals' },
+            { emoji: '🦀', name: 'Crab', category: 'Animals' },
+            { emoji: '🐡', name: 'Pufferfish', category: 'Animals' },
+            { emoji: '🐠', name: 'Tropical Fish', category: 'Animals' },
+            { emoji: '🐬', name: 'Dolphin', category: 'Animals' },
+            { emoji: '🐳', name: 'Whale', category: 'Animals' },
+            { emoji: '🐋', name: 'Sperm Whale', category: 'Animals' },
+            { emoji: '🦈', name: 'Shark', category: 'Animals' },
+            { emoji: '🐊', name: 'Crocodile', category: 'Animals' },
+            { emoji: '🐅', name: 'Tiger Face', category: 'Animals' },
+            { emoji: '🐆', name: 'Leopard', category: 'Animals' },
+            { emoji: '🦓', name: 'Zebra', category: 'Animals' },
+            { emoji: '🦍', name: 'Gorilla', category: 'Animals' },
+            { emoji: '🐘', name: 'Elephant', category: 'Animals' },
+            { emoji: '🦛', name: 'Hippo', category: 'Animals' },
+            { emoji: '🦏', name: 'Rhino', category: 'Animals' },
+            { emoji: '🐪', name: 'Camel', category: 'Animals' },
+            { emoji: '🐫', name: 'Two-hump Camel', category: 'Animals' },
+            { emoji: '🦒', name: 'Giraffe', category: 'Animals' },
+            { emoji: '🦘', name: 'Kangaroo', category: 'Animals' },
+            { emoji: '🐃', name: 'Water Buffalo', category: 'Animals' },
+            { emoji: '🐂', name: 'Ox', category: 'Animals' },
+            { emoji: '🐄', name: 'Cow Face', category: 'Animals' },
+            { emoji: '🐎', name: 'Horse Face', category: 'Animals' },
+            { emoji: '🐖', name: 'Pig Face', category: 'Animals' },
+            { emoji: '🐏', name: 'Ram', category: 'Animals' },
+            { emoji: '🐑', name: 'Ewe', category: 'Animals' },
+            { emoji: '🐐', name: 'Goat', category: 'Animals' },
+            { emoji: '🦌', name: 'Deer', category: 'Animals' },
+            { emoji: '🐕', name: 'Dog Face', category: 'Animals' },
+            { emoji: '🐩', name: 'Poodle', category: 'Animals' },
+            { emoji: '🐈', name: 'Cat Face', category: 'Animals' },
+            { emoji: '🐓', name: 'Rooster', category: 'Animals' },
+            { emoji: '🦃', name: 'Turkey', category: 'Animals' },
+            { emoji: '🦚', name: 'Peacock', category: 'Animals' },
+            { emoji: '🦜', name: 'Parrot', category: 'Animals' },
+            { emoji: '🦢', name: 'Swan', category: 'Animals' },
+            { emoji: '🦩', name: 'Flamingo', category: 'Animals' },
+            { emoji: '🕊', name: 'Dove', category: 'Animals' },
+            { emoji: '🐇', name: 'Rabbit', category: 'Animals' },
+            { emoji: '🦝', name: 'Raccoon', category: 'Animals' },
+            { emoji: '🦨', name: 'Skunk', category: 'Animals' },
+            { emoji: '🦡', name: 'Badger', category: 'Animals' },
+            { emoji: '🦦', name: 'Otter', category: 'Animals' },
+            { emoji: '🦥', name: 'Sloth', category: 'Animals' },
+            { emoji: '🐁', name: 'Mouse', category: 'Animals' },
+            { emoji: '🐀', name: 'Rat', category: 'Animals' },
+            { emoji: '🐿', name: 'Chipmunk', category: 'Animals' },
+            { emoji: '🦔', name: 'Hedgehog', category: 'Animals' },
 
-// Display stickers
-function displayStickers(list){
-  const grid = document.getElementById('stickerGrid');
-  grid.innerHTML = '';
-  list.forEach(sticker=>{
-    const card = document.createElement('div');
-    card.className = 'sticker-card';
-    card.innerHTML = `
-      <div class="sticker-image">${sticker.svg}</div>
-      <div class="sticker-info">
-        <span class="sticker-title">${sticker.id}</span>
-        <span class="sticker-price">$1.99</span>
-        <button class="add-btn" onclick="window.open('${sticker.url}','_blank')">Buy on Redbubble</button>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-  document.getElementById('stickerCount').textContent = list.length;
-}
+            // Food
+            { emoji: '🍎', name: 'Red Apple', category: 'Food' },
+            { emoji: '🍐', name: 'Pear', category: 'Food' },
+            { emoji: '🍊', name: 'Orange', category: 'Food' },
+            { emoji: '🍋', name: 'Lemon', category: 'Food' },
+            { emoji: '🍌', name: 'Banana', category: 'Food' },
+            { emoji: '🍉', name: 'Watermelon', category: 'Food' },
+            { emoji: '🍇', name: 'Grapes', category: 'Food' },
+            { emoji: '🍓', name: 'Strawberry', category: 'Food' },
+            { emoji: '🍈', name: 'Melon', category: 'Food' },
+            { emoji: '🍒', name: 'Cherries', category: 'Food' },
+            { emoji: '🍑', name: 'Peach', category: 'Food' },
+            { emoji: '🥭', name: 'Mango', category: 'Food' },
+            { emoji: '🍍', name: 'Pineapple', category: 'Food' },
+            { emoji: '🥥', name: 'Coconut', category: 'Food' },
+            { emoji: '🥝', name: 'Kiwi Fruit', category: 'Food' },
+            { emoji: '🍅', name: 'Tomato', category: 'Food' },
+            { emoji: '🥑', name: 'Avocado', category: 'Food' },
+            { emoji: '🍆', name: 'Eggplant', category: 'Food' },
+            { emoji: '🥔', name: 'Potato', category: 'Food' },
+            { emoji: '🥕', name: 'Carrot', category: 'Food' },
+            { emoji: '🌽', name: 'Corn', category: 'Food' },
+            { emoji: '🌶', name: 'Hot Pepper', category: 'Food' },
+            { emoji: '🥒', name: 'Cucumber', category: 'Food' },
+            { emoji: '🥬', name: 'Leafy Green', category: 'Food' },
+            { emoji: '🥦', name: 'Broccoli', category: 'Food' },
+            { emoji: '🍄', name: 'Mushroom', category: 'Food' },
+            { emoji: '🥜', name: 'Peanuts', category: 'Food' },
+            { emoji: '🌰', name: 'Chestnut', category: 'Food' },
+            { emoji: '🥐', name: 'Croissant', category: 'Food' },
+            { emoji: '🍞', name: 'Bread', category: 'Food' },
+            { emoji: '🥨', name: 'Pretzel', category: 'Food' },
+            { emoji: '🧀', name: 'Cheese', category: 'Food' },
+            { emoji: '🥚', name: 'Egg', category: 'Food' },
+            { emoji: '🥓', name: 'Bacon', category: 'Food' },
+            { emoji: '🥞', name: 'Pancakes', category: 'Food' },
 
-// Filter stickers
-function filterStickers(category){
-  document.querySelectorAll('.filter-btn').forEach(btn=>btn.classList.remove('active'));
-  event.target.classList.add('active');
-  if(category==='all') displayStickers(customSVGs);
-  else displayStickers(customSVGs.filter(s=>s.category===category));
-}
+            // Activities
+            { emoji: '⚽', name: 'Soccer Ball', category: 'Activities' },
+            { emoji: '🏀', name: 'Basketball', category: 'Activities' },
+            { emoji: '🏈', name: 'Football', category: 'Activities' },
+            { emoji: '⚾', name: 'Baseball', category: 'Activities' },
+            { emoji: '🎾', name: 'Tennis', category: 'Activities' },
+            { emoji: '🏐', name: 'Volleyball', category: 'Activities' },
+            { emoji: '🏉', name: 'Rugby', category: 'Activities' },
+            { emoji: '🎱', name: '8 Ball', category: 'Activities' },
+            { emoji: '🏓', name: 'Ping Pong', category: 'Activities' },
+            { emoji: '🏸', name: 'Badminton', category: 'Activities' },
+            { emoji: '🥅', name: 'Goal Net', category: 'Activities' },
+            { emoji: '⛳', name: 'Golf', category: 'Activities' },
 
-// Initialize
-displayStickers(customSVGs);
-</script>
+            // Objects
+            { emoji: '💡', name: 'Light Bulb', category: 'Objects' },
+            { emoji: '💻', name: 'Laptop', category: 'Objects' },
+            { emoji: '📱', name: 'Mobile Phone', category: 'Objects' },
+            { emoji: '📷', name: 'Camera', category: 'Objects' },
+            { emoji: '🎨', name: 'Palette', category: 'Objects' },
+            { emoji: '🎸', name: 'Guitar', category: 'Objects' },
+            { emoji: '🚀', name: 'Rocket', category: 'Objects' }
+        ];
 
+        const emojiGrid = document.getElementById('emojiGrid');
+        const categoryNav = document.getElementById('categoryNav');
+
+        // 2. Initialize the Store
+        function initStore() {
+            renderCategories();
+            renderEmojis('All');
+        }
+
+        // 3. Render Category Buttons
+        function renderCategories() {
+            const categories = ['All', ...new Set(emojis.map(e => e.category))];
+            
+            categoryNav.innerHTML = categories.map(cat => `
+                <button class="cat-btn ${cat === 'All' ? 'active' : ''}" 
+                        onclick="filterSelection(this, '${cat}')">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        // 4. Render Emoji Cards
+        function renderEmojis(filter) {
+            const filteredData = filter === 'All' 
+                ? emojis 
+                : emojis.filter(e => e.category === filter);
+
+            emojiGrid.innerHTML = filteredData.map(item => {
+                // Generates a Redbubble search link based on the emoji name
+                const rbLink = `https://www.redbubble.com/shop/?query=${encodeURIComponent(item.name)}+emoji`;
+                
+                return `
+                    <div class="card">
+                        <div class="emoji-display">${item.emoji}</div>
+                        <div class="emoji-name">${item.name}</div>
+                        <a href="${rbLink}" target="_blank" class="buy-btn">Buy on Redbubble</a>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 5. Filter Logic
+        function filterSelection(btn, category) {
+            // Update active button state
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Re-render grid
+            renderEmojis(category);
+        }
+
+        // Start the app
+        initStore();
+    </script>
 </body>
 </html>
