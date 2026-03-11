@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StickyWorld | The Best Sticker Shop</title>
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --dark: #292f36;
+            --light: #f7fff7;
+            --accent: #FFE66D;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+
+        /* Header */
+        header {
+            background-color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            border: 2px solid var(--secondary);
+            background: transparent;
+            color: var(--secondary);
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        /* Sticker Grid */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem 4rem 1rem;
+        }
+
+        .sticker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .sticker-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .sticker-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .sticker-image {
+            height: 200px;
+            background-color: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+        }
+
+        .sticker-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .sticker-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sticker-price {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .add-btn {
+            background-color: var(--dark);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .add-btn:hover {
+            background-color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: auto;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--secondary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transform: translateY(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <span>🏷️</span> StickyWorld
+        </div>
+        <div class="cart-icon" onclick="alert('Cart feature coming soon!')">
+            🛒 Cart
+            <span class="cart-count" id="cartCount">0</span>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Stick it to the Man!</h1>
+        <p>High quality vinyl stickers for your laptop, water bottle, and life.</p>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Filters -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterStickers('all')">All</button>
+            <button class="filter-btn" onclick="filterStickers('animals')">Animals</button>
+            <button class="filter-btn" onclick="filterStickers('food')">Food</button>
+            <button class="filter-btn" onclick="filterStickers('abstract')">Abstract</button>
+        </div>
+
+        <!-- Sticker Grid -->
+        <div class="sticker-grid" id="stickerGrid">
+            <!-- Stickers will be injected here by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 StickyWorld. Made with 💖 and Adhesive.</p>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">Added to cart!</div>
+
+    <script>
+        /* --- JAVASCRIPT LOGIC --- */
+
+        // 1. Data: The Stickers
+        const stickers = [
+            { id: 1, name: "Cool Cat", category: "animals", price: 3.99, emoji: "🐱" },
+            { id: 2, name: "Spicy Taco", category: "food", price: 2.50, emoji: "🌮" },
+            { id: 3, name: "Galaxy Brain", category: "abstract", price: 4.00, emoji: "🌌" },
+            { id: 4, name: "Sleepy Bear", category: "animals", price: 3.50, emoji: "🐻" },
+            { id: 5, name: "Pizza Slice", category: "food", price: 2.50, emoji: "🍕" },
+            { id: 6, name: "Neon Heart", category: "abstract", price: 3.00, emoji: "💖" },
+            { id: 7, name: "Space Rocket", category: "abstract", price: 4.50, emoji: "🚀" },
+            { id: 8, name: "Avocado Toast", category: "food", price: 3.00, emoji: "🥑" },
+        ];
+
+        let cartTotal = 0;
+
+        // 2. Function to Render Stickers
+        function renderStickers(filter = 'all') {
+            const grid = document.getElementById('stickerGrid');
+            grid.innerHTML = ''; // Clear current grid
+
+            const filteredStickers = filter === 'all' 
+                ? stickers 
+                : stickers.filter(s => s.category === filter);
+
+            filteredStickers.forEach(sticker => {
+                const card = document.createElement('div');
+                card.className = 'sticker-card';
+                card.innerHTML = `
+                    <div class="sticker-image" style="background-color: ${getRandomColor()}">
+                        ${sticker.emoji}
+                    </div>
+                    <div class="sticker-info">
+                        <h3 class="sticker-title">${sticker.name}</h3>
+                        <span class="sticker-price">$${sticker.price.toFixed(2)}</span>
+                        <button class="add-btn" onclick="addToCart('${sticker.name}')">Add to Cart</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // 3. Helper: Random pastel colors for backgrounds
+        function getRandomColor() {
+            const colors = ['#FFD1DC', '#C1E1C1', '#AEC6CF', '#FDFD96', '#FFB347'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // 4. Function: Filter Logic
+        function filterStickers(category) {
+            // Update active button style
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Re-render
+            renderStickers(category);
+        }
+
+        // 5. Function: Add to Cart
+        function addToCart(name) {
+            cartTotal++;
+            document.getElementById('cartCount').innerText = cartTotal;
+            
+            // Show Toast
+            const toast = document.getElementById('toast');
+            toast.innerText = `${name} added to cart!`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // Initial Render
+        renderStickers();
+
+    </script>
+</body>
+</html>
