@@ -1,79 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>StickHub</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      text-align: center;
-    }
+<meta charset="UTF-8">
+<title>ASTRO Rankings</title>
 
-    header {
-      background: #1e293b;
-      padding: 20px;
-      font-size: 28px;
-      font-weight: bold;
-    }
+<script src="https://cdn.tailwindcss.com"></script>
 
-    .game-modes {
-      margin-top: 50px;
-    }
+<style>
+body {
+    background: radial-gradient(circle at top, #0f172a, #000);
+    color:white;
+    font-family: 'Poppins', sans-serif;
+    overflow-x:hidden;
+}
 
-    .game-modes h2 {
-      font-size: 26px;
-      margin-bottom: 20px;
-    }
+/* 🔥 ANIME GLOW BACKGROUND */
+body::before{
+    content:'';
+    position:fixed;
+    width:200%;
+    height:200%;
+    background:linear-gradient(120deg,transparent,#a855f7,transparent);
+    animation:move 8s linear infinite;
+    opacity:0.1;
+}
+@keyframes move{
+    0%{transform:translateX(-50%) rotate(0deg);}
+    100%{transform:translateX(50%) rotate(360deg);}
+}
 
-    .game-modes ul {
-      list-style: none;
-      padding: 0;
-    }
+.title {
+    text-align:center;
+    font-size:60px;
+    font-weight:bold;
+    text-shadow:0 0 15px #fff,0 0 40px #a855f7;
+}
 
-    .game-modes li {
-      font-size: 24px;
-      margin: 15px 0;
-      background: #1e293b;
-      display: inline-block;
-      padding: 12px 25px;
-      border-radius: 10px;
-      transition: 0.3s;
-    }
+/* tabs */
+.tabs{
+    text-align:center;
+    margin-top:10px;
+}
+.tab{
+    display:inline-block;
+    padding:10px 20px;
+    margin:5px;
+    border-radius:10px;
+    cursor:pointer;
+    background:rgba(255,255,255,0.1);
+    transition:0.3s;
+}
+.tab:hover{
+    box-shadow:0 0 15px #a855f7;
+    transform:scale(1.1);
+}
+.active{
+    background:#a855f7;
+}
 
-    .game-modes li:hover {
-      background: #334155;
-      transform: scale(1.05);
-    }
+/* cards */
+.card{
+    background:rgba(255,255,255,0.05);
+    padding:25px;
+    margin:20px auto;
+    border-radius:20px;
+    width:350px;
+    cursor:pointer;
+    transition:0.3s;
+    box-shadow:0 0 10px #a855f7;
+}
+.card:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 30px #a855f7;
+}
 
-    footer {
-      margin-top: 60px;
-      padding: 15px;
-      background: #1e293b;
-      font-size: 14px;
-    }
-  </style>
+.rank1{
+    border:2px solid white;
+    box-shadow:0 0 40px white;
+}
+
+.skin{
+    width:60px;
+    border-radius:10px;
+}
+
+.tier{
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* row */
+.tier-row{
+    display:flex;
+    justify-content:space-between;
+}
+
+/* popup */
+#profile, #loginBox{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:#111;
+    padding:30px;
+    border-radius:15px;
+    display:none;
+    z-index:1000;
+}
+#overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.7);
+    display:none;
+}
+</style>
 </head>
+
 <body>
 
-  <header>
-    StickHub
-  </header>
+<div class="title">⚡ ASTRO ⚡</div>
 
-  <div class="game-modes">
-    <h2>Game Modes</h2>
-    <ul>
-      <li>🪓 Mace</li>
-      <li>🪖 Nethpot</li>
-      <li>💎⚔️ Sword</li>
-    </ul>
-  </div>
+<div class="tabs">
+    <span class="tab active" onclick="setMode('overall',this)">🏆 Overall</span>
+    <span class="tab" onclick="setMode('mace',this)">🔨 Mace</span>
+    <span class="tab" onclick="setMode('sword',this)">⚔️ Sword</span>
+    <span class="tab" onclick="setMode('nethpot',this)">🧪 Nethpot</span>
+</div>
 
-  <footer>
-    © 2026 StickHub
-  </footer>
+<div style="text-align:center;">
+<button onclick="openLogin()">🔒 Admin Login</button>
+</div>
+
+<div id="rankings"></div>
+
+<div id="overlay" onclick="closeAll()"></div>
+<div id="profile"></div>
+
+<div id="loginBox">
+<h2>Admin Login</h2>
+<input id="user" placeholder="Username"><br>
+<input id="pass" type="password" placeholder="Password"><br>
+<button onclick="login()">Login</button>
+</div>
+
+<script>
+
+let mode="overall";
+
+const admins = [
+    {user:"astro", pass:"astroteam6967"},
+    {user:"owner", pass:"9999"}
+];
+
+function getSkin(name){
+    if(name==="Kriticalzzzzz") return "https://mc-heads.net/avatar/FlameFrags/100";
+    if(name==="iamstealth") return "https://mc-heads.net/avatar/Conxion/100";
+    return "https://mc-heads.net/avatar/"+name;
+}
+
+function getRank(t){
+    let n=parseInt(t[2]);
+    return n*2+(t[0]==="H"?0:1);
+}
+
+function elo(p){
+    return 1000 - (getRank(p.mace)+getRank(p.sword)+getRank(p.nethpot))*10;
+}
+
+let players = JSON.parse(localStorage.getItem("astroPlayers")) || [
+{name:"iamstealth",mace:"LT3",sword:"LT3",nethpot:"HT4"},
+{name:"Kriticalzzzzz",mace:"HT4",sword:"LT3",nethpot:"LT3"}
+];
+
+function setMode(m,el){
+    mode=m;
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    el.classList.add("active");
+    render();
+}
+
+function render(){
+    let sorted;
+
+    if(mode==="overall"){
+        sorted=[...players].sort((a,b)=>elo(b)-elo(a));
+    }else{
+        sorted=[...players].sort((a,b)=>getRank(a[mode])-getRank(b[mode]));
+    }
+
+    let html="";
+    sorted.forEach((p,i)=>{
+        html+=`
+        <div class="card ${i===0?"rank1":""}" onclick='openProfile(${JSON.stringify(p)})'>
+        <img class="skin" src="${getSkin(p.name)}">
+        <h2>#${i+1} ${p.name}</h2>
+
+        ${
+        mode==="overall"
+        ? `<div class="tier-row">
+            <p class="tier">🔨 ${p.mace}</p>
+            <p class="tier">⚔️ ${p.sword}</p>
+            <p class="tier">🧪 ${p.nethpot}</p>
+           </div>`
+        : `<p class="tier">${mode.toUpperCase()}: ${p[mode]}</p>`
+        }
+
+        ${mode==="overall"?`<p>🔥 ELO: ${elo(p)}</p>`:""}
+
+        </div>`;
+    });
+
+    document.getElementById("rankings").innerHTML=html;
+}
+
+function openProfile(p){
+    overlay.style.display="block";
+    profile.style.display="block";
+    profile.innerHTML=`
+    <h2>${p.name}</h2>
+    <img src="${getSkin(p.name)}" width="100">
+    <p>🔨 ${p.mace}</p>
+    <p>⚔️ ${p.sword}</p>
+    <p>🧪 ${p.nethpot}</p>
+    <button onclick="closeAll()">Close</button>
+    `;
+}
+
+function openLogin(){
+    overlay.style.display="block";
+    loginBox.style.display="block";
+}
+
+function login(){
+    let u=user.value;
+    let p=pass.value;
+    let ok=admins.find(a=>a.user===u && a.pass===p);
+    if(ok){alert("Admin Access Granted");}
+    else alert("Denied");
+    closeAll();
+}
+
+function closeAll(){
+    overlay.style.display="none";
+    profile.style.display="none";
+    loginBox.style.display="none";
+}
+
+render();
+
+</script>
 
 </body>
 </html>
