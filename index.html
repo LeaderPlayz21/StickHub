@@ -6,295 +6,233 @@
     <title>Astro Tier List</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-        
         body {
-            font-family: 'Press Start 2P', system-ui;
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+            color: #e0e7ff;
+            min-height: 100vh;
+            font-family: 'Orbitron', sans-serif;
+            overflow-x: hidden;
         }
-        
-        .star-bg {
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 100%);
-            background-size: 300% 300%;
-            animation: stars 20s linear infinite;
+
+        .stars {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="10" cy="10" r="1" fill="white" opacity="0.7"/><circle cx="80" cy="20" r="1.2" fill="white" opacity="0.5"/><circle cx="30" cy="70" r="0.8" fill="white" opacity="0.6"/></svg>') repeat;
+            pointer-events: none;
+            opacity: 0.4;
+            z-index: -1;
         }
-        
-        @keyframes stars {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 300% 300%; }
-        }
-        
+
         .tier-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(30, 30, 60, 0.65);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            transition: all 0.25s ease;
         }
-        
+
         .tier-card:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 0 25px rgba(129, 140, 248, 0.5);
+            transform: translateY(-6px);
+            border-color: #818cf8;
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.25);
         }
-        
+
         .filter-tag {
-            transition: all 0.2s ease;
+            background: rgba(30, 30, 60, 0.7);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            transition: all 0.2s;
         }
-        
+
+        .filter-tag:hover {
+            background: rgba(50, 50, 90, 0.9);
+        }
+
         .filter-tag.active {
-            background-color: #6366f1;
+            background: linear-gradient(135deg, #6366f1, #a78bfa);
             color: white;
-            box-shadow: 0 0 15px #6366f1;
+            border-color: transparent;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
         }
-        
-        .rank-1 { color: #facc15; text-shadow: 0 0 10px #facc15; }
-        .rank-2 { color: #a1a1aa; }
-        .rank-3 { color: #ca8a04; }
-        
+
         .metrics {
-            font-family: monospace;
-            letter-spacing: 2px;
+            font-family: 'Roboto Mono', monospace;
+            letter-spacing: 1px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid #4f46e5/30;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(90deg, #a5b4fc, #c084fc, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
-<body class="star-bg text-white min-h-screen pb-12">
-    <div class="max-w-4xl mx-auto px-4">
+<body class="relative">
+    <div class="stars"></div>
+
+    <div class="max-w-5xl mx-auto px-4 py-12">
         <!-- HEADER -->
-        <header class="pt-12 pb-8 text-center">
-            <div class="inline-flex items-center gap-4 mb-4">
-                <div class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center text-4xl shadow-2xl shadow-indigo-500/50">
-                    ⭐
-                </div>
-                <div>
-                    <h1 class="text-5xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-                        ASTRO TIER LIST
-                    </h1>
-                    <p class="text-xl text-indigo-300 tracking-[4px] mt-1">Minecraft PvP • Survival • Bedwars</p>
-                </div>
-            </div>
-            
-            <div class="bg-black/70 backdrop-blur-md border border-indigo-500/30 rounded-2xl p-6 inline-block">
-                <div class="flex items-center justify-center gap-8 text-sm">
-                    <div class="text-center">
-                        <div class="text-emerald-400 font-bold">PLAY.ASTROMC.XYZ</div>
-                        <div class="text-[10px] text-gray-400">Server IP</div>
-                    </div>
-                    <div class="h-8 w-px bg-indigo-500/30"></div>
-                    <div class="text-center">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-users text-emerald-400"></i>
-                            <span class="font-mono text-emerald-400">1,284</span>
-                        </div>
-                        <div class="text-[10px] text-gray-400">Online Now</div>
-                    </div>
-                </div>
-            </div>
+        <header class="text-center mb-12">
+            <h1 class="text-6xl md:text-7xl font-bold tracking-wider mb-3">
+                ASTRO TIER LIST
+            </h1>
+            <p class="text-xl text-indigo-300 opacity-90">
+                Minecraft Competitive PvP Rankings • Cosmic Edition
+            </p>
         </header>
 
         <!-- FILTERS -->
-        <div class="flex flex-wrap gap-3 justify-center mb-10" id="filters">
-            <span onclick="applyFilter(this)" class="filter-tag active cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-full text-xs font-medium border border-indigo-500/30 flex items-center gap-2">
-                🏆 ALL TIME
-            </span>
-            <span onclick="applyFilter(this)" class="filter-tag cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-full text-xs font-medium border border-indigo-500/30 flex items-center gap-2">
-                ⚡ CURRENT
-            </span>
-            <span onclick="applyFilter(this)" class="filter-tag cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-full text-xs font-medium border border-indigo-500/30 flex items-center gap-2">
-                VANILLA
-            </span>
-            <span onclick="applyFilter(this)" class="filter-tag cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-full text-xs font-medium border border-indigo-500/30 flex items-center gap-2">
-                SWORD
-            </span>
-            <span onclick="applyFilter(this)" class="filter-tag cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-full text-xs font-medium border border-indigo-500/30 flex items-center gap-2">
-                AXE
-            </span>
-            <span onclick="applyFilter(this)" class="filter-tag cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-full text-xs font-medium border border-indigo-500/30 flex items-center gap-2">
-                UHC
-            </span>
-            <span onclick="applyFilter(this)" class="filter-tag cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-full text-xs font-medium border border-indigo-500/30 flex items-center gap-2">
-                SMP
-            </span>
-            <span onclick="applyFilter(this)" class="filter-tag cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-full text-xs font-medium border border-indigo-500/30 flex items-center gap-2">
-                POT
-            </span>
-            <span onclick="applyFilter(this)" class="filter-tag cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-full text-xs font-medium border border-indigo-500/30 flex items-center gap-2">
-                NETHOP
-            </span>
-            <span onclick="applyFilter(this)" class="filter-tag cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-full text-xs font-medium border border-indigo-500/30 flex items-center gap-2">
-                MACE
-            </span>
-            <span onclick="applyFilter(this)" class="filter-tag cursor-pointer px-6 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-full text-xs font-medium border border-indigo-500/30 flex items-center gap-2">
-                🚫 INHUMAN
-            </span>
+        <div class="flex flex-wrap justify-center gap-3 mb-10" id="filters">
+            <span data-filter="all" class="filter-tag active cursor-pointer px-6 py-3 rounded-full text-sm font-medium">ALL</span>
+            <span data-filter="sword" class="filter-tag cursor-pointer px-6 py-3 rounded-full text-sm font-medium">SWORD</span>
+            <span data-filter="axe" class="filter-tag cursor-pointer px-6 py-3 rounded-full text-sm font-medium">AXE</span>
+            <span data-filter="uhc" class="filter-tag cursor-pointer px-6 py-3 rounded-full text-sm font-medium">UHC</span>
+            <span data-filter="pot" class="filter-tag cursor-pointer px-6 py-3 rounded-full text-sm font-medium">POT</span>
+            <span data-filter="nethop" class="filter-tag cursor-pointer px-6 py-3 rounded-full text-sm font-medium">NETHOP</span>
+            <span data-filter="mace" class="filter-tag cursor-pointer px-6 py-3 rounded-full text-sm font-medium">MACE</span>
+            <span data-filter="bedwars" class="filter-tag cursor-pointer px-6 py-3 rounded-full text-sm font-medium">BEDWARS</span>
+            <span data-filter="smp" class="filter-tag cursor-pointer px-6 py-3 rounded-full text-sm font-medium">SMP</span>
         </div>
 
-        <!-- TITLE -->
+        <!-- TIER LIST TITLE -->
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-3xl font-bold flex items-center gap-3">
-                <span class="text-indigo-400">🌌</span>
-                PLAYER REGION TIERS
+                <i class="fa-solid fa-ranking-star text-indigo-400"></i>
+                CURRENT RANKINGS
             </h2>
-            <div id="current-filter" class="text-sm font-mono text-indigo-300 bg-black/50 px-4 py-1 rounded-full">
-                SHOWING: ALL TIME
+            <div id="current-mode" class="text-sm font-mono text-indigo-300 bg-black/40 px-5 py-2 rounded-full border border-indigo-500/30">
+                MODE: ALL
             </div>
         </div>
 
-        <!-- TIER LIST -->
-        <div id="tier-list" class="space-y-3">
-            <!-- Populated by JavaScript -->
+        <!-- TIER LIST CONTAINER -->
+        <div id="tier-list" class="space-y-4">
+            <!-- Cards will be inserted here -->
+            <div class="text-center py-16 text-gray-400 text-xl">
+                Select a category above to view rankings
+            </div>
         </div>
 
         <!-- FOOTER -->
-        <footer class="mt-16 text-center text-xs text-gray-500 border-t border-indigo-500/10 pt-8">
-            <div class="flex justify-center gap-8 mb-4">
-                <a href="#" class="hover:text-indigo-400 transition-colors">Discord</a>
-                <a href="#" class="hover:text-indigo-400 transition-colors">Store</a>
-                <a href="#" class="hover:text-indigo-400 transition-colors">Rules</a>
-                <a href="#" class="hover:text-indigo-400 transition-colors">Report Player</a>
-            </div>
-            <p>© 2026 AstroMC • Not affiliated with Mojang • Made with ⭐ cosmic energy</p>
+        <footer class="mt-20 text-center text-sm text-gray-500">
+            <p>© 2026 Astro Tier List • Community PvP Rankings • Not affiliated with Mojang</p>
         </footer>
     </div>
 
     <script>
-        // Tailwind script already loaded
-        function initializeTailwind() {
-            // Already initialized via CDN
-        }
-
-        // Sample player data (exactly like CactusMC but rebranded)
-        const players = [
+        // Sample data structure — add your real players here
+        // Each player can have multiple modes with their tier/points
+        const playersData = [
+            // Example format — replace / add your own
             {
-                rank: 1,
-                name: "remplified",
-                tier: "Astro Cadet",
-                points: 46,
-                metrics: "PK | LT3 | LT3 | HT3 | LT3 | LT3 | LT3 | LT3"
+                name: "Marlowww",
+                modes: {
+                    sword: { tier: "Combat Grandmaster", points: 450, metrics: "HT1 | PK | LT1 | HT2" },
+                    axe:   { tier: "Elite", points: 220, metrics: "HT3 | LT2" }
+                }
             },
             {
-                rank: 2,
-                name: "devilofwarer",
-                tier: "Astro Cadet",
-                points: 42,
-                metrics: "PK | LT4 | RLT3 | RLT3 | HT4 | RHT3 | RLT3 | RLT3 | LT5"
+                name: "ItzRealMe",
+                modes: {
+                    sword: { tier: "Combat Master", points: 330, metrics: "HT2 | LT3 | PK" },
+                    pot:   { tier: "High Tier", points: 180, metrics: "HT3 | RHT3" }
+                }
             },
             {
-                rank: 3,
-                name: "xShadowBlade",
-                tier: "Astro Novice",
-                points: 19,
-                metrics: "PK | HT3 | LT3 | RHT4 | LT4 | HT3 | RLT3"
+                name: "wizyfn30",
+                modes: {
+                    sword: { tier: "HT3", points: 95, metrics: "HT3 | LT4 | PK" }
+                }
             },
-            {
-                rank: 4,
-                name: "LunarVortex",
-                tier: "Astro Novice",
-                points: 17,
-                metrics: "PK | LT5 | HT4 | RLT3 | LT3 | HT5 | RHT3"
-            },
-            {
-                rank: 5,
-                name: "CosmicSlayer",
-                tier: "Rookie",
-                points: 9,
-                metrics: "PK | LT3 | LT3 | HT3 | RLT4 | LT3"
-            },
-            {
-                rank: 6,
-                name: "NebulaKiller",
-                tier: "Rookie",
-                points: 8,
-                metrics: "PK | HT4 | LT4 | RHT3 | LT5"
-            },
-            {
-                rank: 7,
-                name: "StarPuncher",
-                tier: "Rookie",
-                points: 5,
-                metrics: "PK | LT3 | HT3 | RLT3"
-            }
+            // Add many more players here...
+            // {
+            //     name: "Evbo_",
+            //     modes: { sword: { tier: "LT3", points: 120, metrics: "..." } }
+            // }
         ];
 
-        function renderTierList(filteredPlayers = players) {
+        function renderPlayers(mode = 'all') {
             const container = document.getElementById('tier-list');
             container.innerHTML = '';
 
-            filteredPlayers.forEach(player => {
-                const tierColor = player.points >= 25 ? 'text-emerald-400' : 
-                                 player.points >= 14 ? 'text-indigo-400' : 'text-amber-400';
-                
-                const rankClass = player.rank === 1 ? 'rank-1' : 
-                                 player.rank === 2 ? 'rank-2' : 
-                                 player.rank === 3 ? 'rank-3' : 'text-zinc-400';
+            let filtered = [];
+
+            if (mode === 'all') {
+                // Show all players who have at least one mode
+                filtered = playersData;
+            } else {
+                // Only players who have this mode
+                filtered = playersData.filter(p => p.modes[mode]);
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-20 text-gray-400 text-xl">
+                        No rankings available for this category yet<br>
+                        <span class="text-sm mt-2 block">Add players in the JavaScript data array!</span>
+                    </div>`;
+                return;
+            }
+
+            // Sort by points descending (highest first) in selected mode or overall best
+            filtered.sort((a,b) => {
+                const pa = mode === 'all' ? Math.max(...Object.values(a.modes || {}).map(m => m?.points || 0)) : a.modes[mode]?.points || 0;
+                const pb = mode === 'all' ? Math.max(...Object.values(b.modes || {}).map(m => m?.points || 0)) : b.modes[mode]?.points || 0;
+                return pb - pa;
+            });
+
+            filtered.forEach((player, index) => {
+                const data = mode === 'all' 
+                    ? Object.values(player.modes)[0]   // show best/first mode
+                    : player.modes[mode];
+
+                if (!data) return;
+
+                const rankColor = index === 0 ? 'text-yellow-400 drop-shadow-[0_0_10px_#facc15]' :
+                                 index === 1 ? 'text-gray-300' :
+                                 index === 2 ? 'text-amber-400' : 'text-indigo-300';
 
                 const card = document.createElement('div');
-                card.className = `tier-card bg-zinc-900/80 border border-zinc-700 hover:border-indigo-500 rounded-2xl p-6 flex items-center gap-6`;
-                
+                card.className = `tier-card rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center gap-6`;
+
                 card.innerHTML = `
-                    <div class="${rankClass} w-12 text-4xl font-bold text-right pr-2">${player.rank}</div>
+                    <div class="${rankColor} w-14 text-5xl font-bold text-center md:text-right">${index + 1}</div>
                     
                     <div class="flex-1">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-xl">
-                                👾
-                            </div>
-                            <div>
-                                <div class="font-bold text-xl">${player.name}</div>
-                                <div class="${tierColor} text-sm font-medium">${player.tier} <span class="text-zinc-400">(${player.points} pts)</span></div>
-                            </div>
+                        <div class="text-2xl font-bold mb-1">${player.name}</div>
+                        <div class="text-lg ${data.tier.includes('Grandmaster') || data.tier.includes('Master') ? 'text-emerald-400' : 'text-indigo-400'}">
+                            ${data.tier} (${data.points} pts)
                         </div>
                     </div>
                     
-                    <div class="metrics text-xs bg-black/60 px-5 py-3 rounded-xl border border-zinc-700 text-indigo-300">
-                        ${player.metrics}
+                    <div class="metrics text-sm px-6 py-4 rounded-xl w-full md:w-auto md:min-w-[280px] text-center md:text-right">
+                        ${data.metrics || 'No metrics available'}
                     </div>
                 `;
-                
+
                 container.appendChild(card);
             });
         }
 
-        function applyFilter(element) {
-            // Remove active from all
-            document.querySelectorAll('.filter-tag').forEach(tag => {
-                tag.classList.remove('active');
-            });
-            
-            // Add active
-            element.classList.add('active');
-            
-            // Update display text
-            const filterText = element.textContent.trim();
-            document.getElementById('current-filter').textContent = `SHOWING: ${filterText}`;
-            
-            // For this mock, we keep the same list (real site would load different data)
-            // You can extend this later with multiple datasets
-            renderTierList();
-            
-            // Little animation
-            const list = document.getElementById('tier-list');
-            list.style.opacity = 0;
-            setTimeout(() => {
-                list.style.transition = 'opacity 0.4s';
-                list.style.opacity = 1;
-            }, 10);
-        }
+        // Filter click handler
+        document.querySelectorAll('[data-filter]').forEach(tag => {
+            tag.addEventListener('click', () => {
+                // Update active style
+                document.querySelectorAll('[data-filter]').forEach(t => t.classList.remove('active'));
+                tag.classList.add('active');
 
-        // Initialize everything
-        window.onload = function() {
-            renderTierList();
-            
-            // Make first filter active by default
-            const firstFilter = document.querySelector('.filter-tag');
-            if (firstFilter) firstFilter.classList.add('active');
-            
-            // Keyboard shortcut demo (press '/' to focus filters)
-            document.addEventListener('keydown', (e) => {
-                if (e.key === '/' && document.activeElement.tagName !== "INPUT") {
-                    e.preventDefault();
-                    document.getElementById('filters').scrollIntoView({ behavior: 'smooth' });
-                }
+                const mode = tag.getAttribute('data-filter');
+                document.getElementById('current-mode').textContent = `MODE: ${mode.toUpperCase()}`;
+
+                renderPlayers(mode);
             });
-        };
+        });
+
+        // Initial render
+        renderPlayers('all');
     </script>
 </body>
 </html>
